@@ -3,6 +3,7 @@ package com.example.projet_amairi_mokhtar.controller;
 import com.example.projet_amairi_mokhtar.dto.ClientCreateDTO;
 import com.example.projet_amairi_mokhtar.dto.ClientUpdateDTO;
 import com.example.projet_amairi_mokhtar.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ClientController {
 
 
     @PostMapping
-    public ResponseEntity<ClientCreateDTO> createClient(@RequestBody ClientCreateDTO clientCreateDTO) {
+    public ResponseEntity<ClientCreateDTO> createClient(@Valid @RequestBody ClientCreateDTO clientCreateDTO) {
         ClientCreateDTO createdClient = clientService.createClient(clientCreateDTO);
         return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
     }
@@ -38,7 +39,7 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<ClientCreateDTO> updateClient(
             @PathVariable Long id,
-            @RequestBody ClientUpdateDTO clientUpdateDTO) {
+            @Valid @RequestBody ClientUpdateDTO clientUpdateDTO) {
 
         ClientCreateDTO updatedClient = clientService.updateClient(id, clientUpdateDTO);
 

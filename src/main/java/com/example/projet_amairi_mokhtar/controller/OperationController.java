@@ -2,6 +2,7 @@ package com.example.projet_amairi_mokhtar.controller;
 
 import com.example.projet_amairi_mokhtar.dto.VirementDTO;
 import com.example.projet_amairi_mokhtar.service.VirementService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class OperationController {
     private final VirementService virementService;
 
     @PostMapping("/virement")
-    public ResponseEntity<Map<String, String>> virement(@RequestBody VirementDTO virementDTO) {
+    public ResponseEntity<Map<String, String>> virement(@Valid @RequestBody VirementDTO virementDTO) {
 
         virementService.effectuerVirement(
                 virementDTO.getIdCompteSource(),
