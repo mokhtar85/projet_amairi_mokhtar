@@ -4,6 +4,7 @@ import com.example.projet_amairi_mokhtar.dto.ClientCreateDTO;
 import com.example.projet_amairi_mokhtar.dto.ClientUpdateDTO;
 import com.example.projet_amairi_mokhtar.entity.CarteBancaire;
 import com.example.projet_amairi_mokhtar.entity.Client;
+import com.example.projet_amairi_mokhtar.entity.Compte;
 import com.example.projet_amairi_mokhtar.entity.Conseiller;
 import com.example.projet_amairi_mokhtar.mapper.ClientMapper;
 import com.example.projet_amairi_mokhtar.repository.CarteBancaireRepository;
@@ -75,7 +76,14 @@ public class ClientServiceImpl  implements ClientService {
     public void deleteClient(Long id) {
         Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Client introuvable"));
-
+        if (client.getComptes() != null) {
+            for (Compte compte : client.getComptes()) {
+                if (compte.getSolde() < 0) {
+                    throw new RuntimeException("Impossible de supprimer le client : Le compte "
+                            + compte.getNumeroCompte() + " est débiteur de " + compte.getSolde() + "€.");
+                }
+            }
+        }
         if (client.getCartesBancaires() != null) {
             for (CarteBancaire carte : client.getCartesBancaires()) {
                 carte.setActive(false);
